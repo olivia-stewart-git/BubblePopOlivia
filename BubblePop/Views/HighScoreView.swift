@@ -27,7 +27,7 @@ struct HighScoreView: View {
         }
         .navigationTitle("High Scores")
         .onAppear {
-            scores = ScoreManager.shared.loadScores()
+            scores = ScoreManager().loadAll()
         }
     }
 }

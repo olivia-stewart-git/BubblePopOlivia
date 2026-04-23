@@ -1,36 +1,32 @@
 import Foundation
 
-/// Manages persistent storage of player high scores using a JSON file
-/// in the app's documents directory.
-final class ScoreManager {
-    static let shared = ScoreManager()
+/// Concrete implementation of `ScoreStoring` that persists scores as a
+/// JSON file in the app's Documents directory.
+///
+/// Callers depend on the `ScoreStoring` protocol, not this class, so the
+/// storage mechanism can be replaced (e.g. CloudKit, CoreData) without
+/// modifying any other file (DIP / OCP).
+final class ScoreManager: ScoreStoring {
 
-    private let fileName = "highscores.json"
+    private let fileName: String
+
+    /// Designated initialiser — pass a custom filename for testing.
+    init(fileName: String = "highscores.json") {
+        self.fileName = fileName
+    }
 
     private var fileURL: URL {
-        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return docs.appendingPathComponent(fileName)
+        FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent(fileName)
     }
 
-    private init() {}
+    // MARK: - ScoreStoring
 
-    // MARK: - Public API
-
-    /// Returns all saved scores sorted descending by score.
-    func loadScores() -> [PlayerScore] {
-        guard let data = try? Data(contentsOf: fileURL),
-              let scores = try? JSONDecoder().decode([PlayerScore].self, from: data)
-        else { return [] }
-        return scores.sorted { $0.score > $1.score }
-    }
-
-    /// Saves a player's score. If the player already has a record,
-    /// keeps only the higher score (core functionality 10).
-    func saveScore(name: String, score: Int) {
-        var scores = loadScoresRaw()
+    func save(name: String, score: Int) {
+        var scores = loadRaw()
 
         if let idx = scores.firstIndex(where: { $0.name == name }) {
-            // Keep the higher score
             if score > scores[idx].score {
                 scores[idx] = PlayerScore(name: name, score: score)
             }
@@ -41,15 +37,18 @@ final class ScoreManager {
         persist(scores)
     }
 
-    /// The highest score ever recorded, or 0 if none.
-    func highestScore() -> Int {
-        loadScores().first?.score ?? 0
+    func loadAll() -> [PlayerScore] {
+        loadRaw().sorted { $0.score > $1.score }
+    }
+
+    func highest() -> Int {
+        loadAll().first?.score ?? 0
     }
 
     // MARK: - Private helpers
 
-    private func loadScoresRaw() -> [PlayerScore] {
-        guard let data = try? Data(contentsOf: fileURL),
+    private func loadRaw() -> [PlayerScore] {
+        guard let data   = try? Data(contentsOf: fileURL),
               let scores = try? JSONDecoder().decode([PlayerScore].self, from: data)
         else { return [] }
         return scores
