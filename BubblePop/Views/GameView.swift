@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// The main gameplay screen.
 struct GameView: View {
     @StateObject private var viewModel: GameViewModel
     @Environment(\.dismiss) private var dismiss
@@ -15,18 +14,28 @@ struct GameView: View {
 
     var body: some View {
         ZStack {
-            // Background
-            Color(.systemBackground)
+            Color.white
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Top HUD: timer, score, high score (core 2, 3; extended 3)
-                hudBar
+                // HUD
+                HStack {
+                    Text("Time: \(viewModel.timeRemaining)")
+                    Spacer()
+                    Text("Best: \(max(viewModel.allTimeHighScore, viewModel.score))")
+                    Spacer()
+                    Text("Score: \(viewModel.score)")
+                }
+                .font(.system(.body, design: .monospaced))
+                .padding(6)
+                .background(Color(uiColor: .systemGray5))
+
+                Divider()
 
                 // Play area
                 GeometryReader { geo in
                     ZStack {
-                        Color.clear
+                        Color(uiColor: .systemGray6)
                             .onAppear {
                                 viewModel.playAreaSize = geo.size
                                 viewModel.startCountdown()
@@ -35,16 +44,12 @@ struct GameView: View {
                                 viewModel.playAreaSize = newSize
                             }
 
-                        // Bubbles
                         ForEach(viewModel.bubbles) { bubble in
                             BubbleView(bubble: bubble) {
-                                withAnimation(.easeOut(duration: 0.2)) {
-                                    viewModel.popBubble(bubble)
-                                }
+                                viewModel.popBubble(bubble)
                             }
                         }
 
-                        // Score popups (extended feature 2: animations)
                         ForEach(viewModel.scorePopups) { popup in
                             ScorePopupView(popup: popup)
                         }
@@ -52,12 +57,10 @@ struct GameView: View {
                 }
             }
 
-            // Countdown overlay (extended feature 2)
             if viewModel.isCountingDown {
                 CountdownOverlay(value: viewModel.countdownValue)
             }
 
-            // Game over overlay
             if viewModel.isGameOver {
                 gameOverOverlay
             }
@@ -72,95 +75,31 @@ struct GameView: View {
         }
     }
 
-    // MARK: - Sub-views
-
-    private var hudBar: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text("Time")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text("\(viewModel.timeRemaining)")
-                    .font(.title.bold().monospacedDigit())
-                    .foregroundStyle(viewModel.timeRemaining <= 10 ? .red : .primary)
-            }
-
-            Spacer()
-
-            VStack {
-                Text("High Score")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text("\(max(viewModel.allTimeHighScore, viewModel.score))")
-                    .font(.title3.monospacedDigit())
-                    .foregroundStyle(.orange)
-            }
-
-            Spacer()
-
-            VStack(alignment: .trailing) {
-                Text("Score")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text("\(viewModel.score)")
-                    .font(.title.bold().monospacedDigit())
-                    .foregroundStyle(.blue)
-            }
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .background(.ultraThinMaterial)
-    }
-
     private var gameOverOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.5)
-                .ignoresSafeArea()
+        VStack(spacing: 8) {
+            Text("GAME OVER")
+                .font(.system(.title, design: .monospaced).bold())
 
-            VStack(spacing: 20) {
-                Text("Game Over!")
-                    .font(.largeTitle.bold())
-                    .foregroundStyle(.white)
+            Text("Player: \(viewModel.playerName)")
+                .font(.system(.body, design: .monospaced))
 
-                Text("\(viewModel.playerName)")
-                    .font(.title2)
-                    .foregroundStyle(.white.opacity(0.8))
+            Text("Final Score: \(viewModel.score)")
+                .font(.system(.title2, design: .monospaced))
 
-                Text("Score: \(viewModel.score)")
-                    .font(.title.bold())
-                    .foregroundStyle(.yellow)
-
-                NavigationLink(destination: HighScoreView()) {
-                    Text("View High Scores")
-                        .font(.title3.bold())
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.orange)
-                        )
-                }
-
-                Button {
-                    dismiss()
-                } label: {
-                    Text("Back to Home")
-                        .font(.title3)
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.blue)
-                        )
-                }
+            NavigationLink(destination: HighScoreView()) {
+                Text("View High Scores")
             }
-            .padding(32)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.black.opacity(0.7))
-            )
+            .buttonStyle(.borderedProminent)
+
+            Button("Back to Home") { dismiss() }
+                .buttonStyle(.bordered)
         }
-        .transition(.opacity)
+        .padding()
+        .background(Color(uiColor: .systemBackground))
+        .overlay(
+            Rectangle()
+                .strokeBorder(Color.black, lineWidth: 2)
+        )
     }
 }
 
@@ -170,39 +109,21 @@ struct BubbleView: View {
     let bubble: Bubble
     let onTap: () -> Void
 
-    @State private var scale: CGFloat = 0.1
-
     var body: some View {
-        ZStack {
-            Circle()
-                .fill(bubble.bubbleColor.color.gradient)
-                .frame(width: bubble.radius * 2, height: bubble.radius * 2)
-                .shadow(color: bubble.bubbleColor.color.opacity(0.5), radius: 4)
-
-            // Show point value
-            Text("\(bubble.bubbleColor.points)")
-                .font(.caption.bold())
-                .foregroundStyle(.white)
-        }
-        .scaleEffect(scale)
-        .position(bubble.position)
-        .onTapGesture {
-            withAnimation(.easeIn(duration: 0.15)) {
-                scale = 1.4
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                onTap()
-            }
-        }
-        .onAppear {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
-                scale = 1.0
-            }
-        }
+        Circle()
+            .fill(bubble.bubbleColor.color)
+            .frame(width: bubble.radius * 2, height: bubble.radius * 2)
+            .overlay(
+                Text("\(bubble.bubbleColor.points)")
+                    .font(.caption.bold())
+                    .foregroundStyle(.white)
+            )
+            .position(bubble.position)
+            .onTapGesture { onTap() }
     }
 }
 
-// MARK: - Score popup animation (extended feature 2)
+// MARK: - Score popup
 
 struct ScorePopupView: View {
     let popup: ScorePopup
@@ -211,16 +132,15 @@ struct ScorePopupView: View {
     @State private var opacity: Double = 1.0
 
     var body: some View {
-        Text(popup.isCombo ? "+\(popup.points) COMBO!" : "+\(popup.points)")
-            .font(popup.isCombo ? .title2.bold() : .headline.bold())
-            .foregroundStyle(popup.isCombo ? .orange : .green)
-            .shadow(radius: 2)
+        Text(popup.isCombo ? "+\(popup.points) combo" : "+\(popup.points)")
+            .font(.system(.caption, design: .monospaced))
+            .foregroundStyle(popup.isCombo ? .orange : .black)
             .position(popup.position)
             .offset(y: offsetY)
             .opacity(opacity)
             .onAppear {
-                withAnimation(.easeOut(duration: 0.8)) {
-                    offsetY = -60
+                withAnimation(.linear(duration: 0.8)) {
+                    offsetY = -50
                     opacity = 0
                 }
             }

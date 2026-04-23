@@ -1,66 +1,33 @@
 import SwiftUI
 
-/// Displays ranked high scores (core 11).
 struct HighScoreView: View {
     @State private var scores: [PlayerScore] = []
 
     var body: some View {
-        ZStack {
+        Group {
             if scores.isEmpty {
-                ContentUnavailableView(
-                    "No Scores Yet",
-                    systemImage: "trophy",
-                    description: Text("Play a game to see scores here!")
-                )
+                Text("no scores yet")
+                    .foregroundStyle(.secondary)
             } else {
                 List {
                     ForEach(Array(scores.enumerated()), id: \.element.name) { index, entry in
                         HStack {
-                            // Rank
-                            rankBadge(index + 1)
-
-                            VStack(alignment: .leading) {
-                                Text(entry.name)
-                                    .font(.headline)
-                            }
-
+                            Text("#\(index + 1)")
+                                .font(.system(.body, design: .monospaced))
+                                .foregroundStyle(.secondary)
+                                .frame(width: 36, alignment: .leading)
+                            Text(entry.name)
                             Spacer()
-
                             Text("\(entry.score)")
-                                .font(.title3.bold().monospacedDigit())
-                                .foregroundStyle(.blue)
+                                .font(.system(.body, design: .monospaced))
                         }
-                        .padding(.vertical, 4)
                     }
                 }
             }
         }
         .navigationTitle("High Scores")
-        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             scores = ScoreManager.shared.loadScores()
-        }
-    }
-
-    @ViewBuilder
-    private func rankBadge(_ rank: Int) -> some View {
-        ZStack {
-            Circle()
-                .fill(rankColor(rank))
-                .frame(width: 32, height: 32)
-
-            Text("\(rank)")
-                .font(.caption.bold())
-                .foregroundStyle(.white)
-        }
-    }
-
-    private func rankColor(_ rank: Int) -> Color {
-        switch rank {
-        case 1: return .yellow
-        case 2: return .gray
-        case 3: return .orange
-        default: return .blue.opacity(0.5)
         }
     }
 }
