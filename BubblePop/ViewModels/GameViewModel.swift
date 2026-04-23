@@ -56,10 +56,14 @@ final class GameViewModel: ObservableObject {
             if self.countdownValue > 1 {
                 self.countdownValue -= 1
             } else {
+                self.countdownValue = 0  // triggers "Go!" in overlay
                 timer.invalidate()
                 self.countdownTimer = nil
-                self.isCountingDown = false
-                self.startGame()
+                // Brief delay so "Go!" animation is visible before game begins
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+                    self?.isCountingDown = false
+                    self?.startGame()
+                }
             }
         }
     }
