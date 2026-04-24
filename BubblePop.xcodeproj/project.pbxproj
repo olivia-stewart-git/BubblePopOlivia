@@ -19,6 +19,7 @@
 		AA000101000000000000000A /* HighScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000000A /* HighScoreView.swift */; };
 		AA000101000000000000000B /* CountdownOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000000B /* CountdownOverlay.swift */; };
 		AA000101000000000000000C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000000C /* Assets.xcassets */; };
+		C1DF68B52F9B2F0300B86DD6 /* ScoreStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF68B42F9B2F0300B86DD6 /* ScoreStoring.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		AA000001000000000000000B /* CountdownOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownOverlay.swift; sourceTree = "<group>"; };
 		AA000001000000000000000C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA000001000000000000000D /* BubblePop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BubblePop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1DF68B42F9B2F0300B86DD6 /* ScoreStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreStoring.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,7 +50,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AA0002010000000000000001 /* Root */ = {
+		AA0002010000000000000001 = {
 			isa = PBXGroup;
 			children = (
 				AA0002010000000000000002 /* BubblePop */,
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				AA0000010000000000000005 /* ScoreManager.swift */,
+				C1DF68B42F9B2F0300B86DD6 /* ScoreStoring.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -158,7 +161,7 @@
 				en,
 				Base,
 			);
-			mainGroup = AA0002010000000000000001 /* Root */;
+			mainGroup = AA0002010000000000000001;
 			productRefGroup = AA0002010000000000000007 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -195,6 +198,7 @@
 				AA0001010000000000000009 /* GameView.swift in Sources */,
 				AA000101000000000000000A /* HighScoreView.swift in Sources */,
 				AA000101000000000000000B /* CountdownOverlay.swift in Sources */,
+				C1DF68B52F9B2F0300B86DD6 /* ScoreStoring.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

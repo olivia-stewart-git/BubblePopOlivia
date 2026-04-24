@@ -1,16 +1,8 @@
 import Foundation
 
-/// Concrete implementation of `ScoreStoring` that persists scores as a
-/// JSON file in the app's Documents directory.
-///
-/// Callers depend on the `ScoreStoring` protocol, not this class, so the
-/// storage mechanism can be replaced (e.g. CloudKit, CoreData) without
-/// modifying any other file (DIP / OCP).
 final class ScoreManager: ScoreStoring {
-
     private let fileName: String
 
-    /// Designated initialiser — pass a custom filename for testing.
     init(fileName: String = "highscores.json") {
         self.fileName = fileName
     }
@@ -20,8 +12,6 @@ final class ScoreManager: ScoreStoring {
             .urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent(fileName)
     }
-
-    // MARK: - ScoreStoring
 
     func save(name: String, score: Int) {
         var scores = loadRaw()
@@ -45,10 +35,8 @@ final class ScoreManager: ScoreStoring {
         loadAll().first?.score ?? 0
     }
 
-    // MARK: - Private helpers
-
     private func loadRaw() -> [PlayerScore] {
-        guard let data   = try? Data(contentsOf: fileURL),
+        guard let data = try? Data(contentsOf: fileURL),
               let scores = try? JSONDecoder().decode([PlayerScore].self, from: data)
         else { return [] }
         return scores
