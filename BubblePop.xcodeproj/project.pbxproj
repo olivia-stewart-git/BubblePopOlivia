@@ -20,6 +20,12 @@
 		AA000101000000000000000B /* CountdownOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000000B /* CountdownOverlay.swift */; };
 		AA000101000000000000000C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000000C /* Assets.xcassets */; };
 		C1DF68B52F9B2F0300B86DD6 /* ScoreStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF68B42F9B2F0300B86DD6 /* ScoreStoring.swift */; };
+		BB0001010000000000000001 /* BubbleMoving.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000010000000000000001 /* BubbleMoving.swift */; };
+		BB0001010000000000000002 /* BubblePlacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000010000000000000002 /* BubblePlacing.swift */; };
+		BB0001010000000000000003 /* ScoreCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000010000000000000003 /* ScoreCalculating.swift */; };
+		BB0001010000000000000004 /* BubbleMovementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000010000000000000004 /* BubbleMovementService.swift */; };
+		BB0001010000000000000005 /* BubblePlacementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000010000000000000005 /* BubblePlacementService.swift */; };
+		BB0001010000000000000006 /* ScoringService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000010000000000000006 /* ScoringService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +43,12 @@
 		AA000001000000000000000C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA000001000000000000000D /* BubblePop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BubblePop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1DF68B42F9B2F0300B86DD6 /* ScoreStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreStoring.swift; sourceTree = "<group>"; };
+		BB0000010000000000000001 /* BubbleMoving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleMoving.swift; sourceTree = "<group>"; };
+		BB0000010000000000000002 /* BubblePlacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePlacing.swift; sourceTree = "<group>"; };
+		BB0000010000000000000003 /* ScoreCalculating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCalculating.swift; sourceTree = "<group>"; };
+		BB0000010000000000000004 /* BubbleMovementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleMovementService.swift; sourceTree = "<group>"; };
+		BB0000010000000000000005 /* BubblePlacementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePlacementService.swift; sourceTree = "<group>"; };
+		BB0000010000000000000006 /* ScoringService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +78,8 @@
 				AA0002010000000000000004 /* ViewModels */,
 				AA0002010000000000000005 /* Views */,
 				AA0002010000000000000006 /* Utilities */,
+				BB0002010000000000000001 /* Protocols */,
+				BB0002010000000000000002 /* Services */,
 				AA000001000000000000000C /* Assets.xcassets */,
 			);
 			path = BubblePop;
@@ -108,6 +122,26 @@
 				C1DF68B42F9B2F0300B86DD6 /* ScoreStoring.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		BB0002010000000000000001 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				BB0000010000000000000001 /* BubbleMoving.swift */,
+				BB0000010000000000000002 /* BubblePlacing.swift */,
+				BB0000010000000000000003 /* ScoreCalculating.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		BB0002010000000000000002 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BB0000010000000000000004 /* BubbleMovementService.swift */,
+				BB0000010000000000000005 /* BubblePlacementService.swift */,
+				BB0000010000000000000006 /* ScoringService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		AA0002010000000000000007 /* Products */ = {
@@ -199,6 +233,12 @@
 				AA000101000000000000000A /* HighScoreView.swift in Sources */,
 				AA000101000000000000000B /* CountdownOverlay.swift in Sources */,
 				C1DF68B52F9B2F0300B86DD6 /* ScoreStoring.swift in Sources */,
+				BB0001010000000000000001 /* BubbleMoving.swift in Sources */,
+				BB0001010000000000000002 /* BubblePlacing.swift in Sources */,
+				BB0001010000000000000003 /* ScoreCalculating.swift in Sources */,
+				BB0001010000000000000004 /* BubbleMovementService.swift in Sources */,
+				BB0001010000000000000005 /* BubblePlacementService.swift in Sources */,
+				BB0001010000000000000006 /* ScoringService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,3 +1,5 @@
+import Foundation
+
 /// Concrete implementation of `ScoreCalculating`.
 ///
 /// Single responsibility: determine how many points a pop earns.
