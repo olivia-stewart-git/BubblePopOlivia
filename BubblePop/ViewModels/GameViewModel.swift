@@ -1,16 +1,5 @@
 import SwiftUI
 
-/// Coordinates the game loop and owns published state consumed by the views.
-///
-/// All domain logic is delegated to injected services:
-///   - `BubblePlacing`   — where bubbles go
-///   - `BubbleMoving`    — how bubbles move each frame
-///   - `ScoreCalculating`— how many points a pop earns
-///   - `ScoreStoring`    — persistence
-///
-/// GameViewModel's only responsibility is orchestrating those services and
-/// driving the timers. Adding a new rule (e.g. power-ups) means writing a
-/// new service, not editing this file (OCP).
 final class GameViewModel: ObservableObject {
 
     // MARK: - Published state
@@ -49,7 +38,6 @@ final class GameViewModel: ObservableObject {
 
     // MARK: - Init
 
-    /// Production initialiser: uses default concrete services.
     convenience init(playerName: String, gameTime: Int, maxBubbles: Int) {
         self.init(
             playerName: playerName,
@@ -62,8 +50,6 @@ final class GameViewModel: ObservableObject {
         )
     }
 
-    /// Full initialiser: allows injecting alternative service implementations
-    /// (e.g. mocks during testing — DIP).
     init(
         playerName: String,
         gameTime: Int,

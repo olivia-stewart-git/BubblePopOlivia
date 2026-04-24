@@ -1,10 +1,5 @@
 import Foundation
 
-/// Concrete implementation of `ScoreCalculating`.
-///
-/// Single responsibility: determine how many points a pop earns.
-/// Combo state (last colour, consecutive count) lives entirely here,
-/// so neither the ViewModel nor any view needs to track it.
 final class ScoringService: ScoreCalculating {
 
     private let comboMultiplier: Double = 1.5
